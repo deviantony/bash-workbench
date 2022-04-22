@@ -69,9 +69,13 @@ apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -yq \
     docker-ce-cli \
     containerd.io
 
-usermod -aG docker $USER
+success "Docker installed"
 
-success "Docker installed and configured"
+info "Adding ${SUDO_USER} to docker group"
+
+usermod -aG docker ${SUDO_USER}
+
+success "${SUDO_USER} added to docker group"
 
 printSection "Installing Portainer"
 

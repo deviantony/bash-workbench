@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-# Create virtual Docker environments (Docker standalone) via Docker DIND containers
-# and register them in Portainer with Edge agents.
+# Create unassociated virtual Edge environments in Portainer
 
 set -e
 

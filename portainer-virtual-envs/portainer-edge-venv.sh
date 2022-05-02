@@ -51,6 +51,15 @@ main() {
   [[ "$(command -v http)" ]] || errorAndExit "Unable to find http binary. Please ensure http (httpie) is installed before running this script."
   [[ "$(command -v jq)" ]] || errorAndExit "Unable to find jq binary. Please ensure jq is installed before running this script."
   [[ "$(command -v uuidgen)" ]] || errorAndExit "Unable to find uuidgen binary. Please uuidgen is installed before running this script."
+  
+  info "Checking Docker readyness"
+
+  until docker info
+  do
+    error "Docker not ready yet - retrying in 5 seconds"
+    sleep 5
+  done
+
   info "Checking Portainer API connectivity on ${PORTAINER_API_URL}"
 
   http --verify=no --check-status --ignore-stdin "${PORTAINER_API_URL}"/api/status

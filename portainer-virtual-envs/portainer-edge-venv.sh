@@ -65,7 +65,7 @@ main() {
 
   info "Sending environment creation request to Portainer API (name=${env_id})..."
 
-  response=$(http --verify=no --body --form POST "${PORTAINER_API_URL}"/api/endpoints \
+  response=$(http --verify=no --ignore-stdin --body --form POST "${PORTAINER_API_URL}"/api/endpoints \
     "X-API-Key:${PORTAINER_API_TOKEN}" \
     Name="venv-${env_id}" \
     URL="${PORTAINER_API_URL}" \

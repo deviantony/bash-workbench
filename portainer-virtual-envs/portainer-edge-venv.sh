@@ -75,7 +75,7 @@ main() {
 
   info "Deploying Portainer Edge agent using Edge key ${edge_key}..."
   
-  docker run -d \
+  docker run -i \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -v /var/lib/docker/volumes:/var/lib/docker/volumes \
     -v /:/host \

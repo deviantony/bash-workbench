@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 # Description: Queries a Portainer instance API to create an Edge environment and runs a local Portainer agent
 # as a standalone Docker container. The local Portainer agent is then connected to the Edge environment.

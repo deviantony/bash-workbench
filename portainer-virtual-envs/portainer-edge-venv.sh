@@ -95,7 +95,7 @@ main() {
     -e EDGE_KEY=${edge_key} \
     -e EDGE_INSECURE_POLL=1 \
     --name portainer_edge_agent \
-    portainer/agent:2.11.1
+    portainertest.azurecr.io/portainer/agent:2.11.1
 
   success "Virtual environment created"
 }

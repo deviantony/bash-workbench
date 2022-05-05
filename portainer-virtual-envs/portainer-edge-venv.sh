@@ -38,15 +38,16 @@ errorAndExit() {
 # !logging
 
 main() {
-  if [[ $# -lt 2 ]]; then
+  if [[ $# -lt 3 ]]; then
     error "Not enough arguments"
-    error "Usage: ${0} <PORTAINER_API_URL> <PORTAINER_API_TOKEN>"
-    error "Example: ${0} https://portainer-sdb.local:9443 ptr_VvgSwg+mtdnIxNf4pwrk+h8DG2eDzLo7SDVRWYP3xZ8="
+    error "Usage: ${0} <PORTAINER_API_URL> <PORTAINER_API_TOKEN> <PORTAINER_AGENT>"
+    error "Example: ${0} https://portainer-sdb.local:9443 ptr_VvgSwg+mtdnIxNf4pwrk+h8DG2eDzLo7SDVRWYP3xZ8= portainertest.azurecr.io/portainer/agent:2.11.1"
     exit 1
   fi
 
   PORTAINER_API_URL="${1}"
   PORTAINER_API_TOKEN="${2}"
+  PORTAINER_AGENT="${3}"
 
   [[ "$(command -v http)" ]] || errorAndExit "Unable to find http binary. Please ensure http (httpie) is installed before running this script."
   [[ "$(command -v jq)" ]] || errorAndExit "Unable to find jq binary. Please ensure jq is installed before running this script."
@@ -72,6 +73,8 @@ main() {
 
   env_id=$(uuidgen)
 
+  sleep 5
+
   info "Sending environment creation request to Portainer API (name=${env_id})..."
 
   response=$(http --verify=no --ignore-stdin --body --form POST "${PORTAINER_API_URL}"/api/endpoints \
@@ -81,6 +84,8 @@ main() {
     EndpointCreationType=4)
 
   edge_key=$(echo "${response}" | jq -r '.EdgeKey')
+
+  sleep 5
 
   info "Deploying Portainer Edge agent using Edge key ${edge_key}..."
   
@@ -95,7 +100,7 @@ main() {
     -e EDGE_KEY=${edge_key} \
     -e EDGE_INSECURE_POLL=1 \
     --name portainer_edge_agent \
-    portainertest.azurecr.io/portainer/agent:2.11.1
+    ${PORTAINER_AGENT}
 
   success "Virtual environment created"
 }

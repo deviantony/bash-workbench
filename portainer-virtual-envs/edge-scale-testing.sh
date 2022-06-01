@@ -52,12 +52,17 @@ main() {
     idx=$START_IDX
     total=$((idx + (ENV_COUNT - 1)))
 
+    info "Creating Docker network"
+    
+    docker network create --driver=bridge --subnet=172.28.0.0/16 virtualenvs
+
     info "Creating ${ENV_COUNT} virtual environments..."
 
     for ((i = idx ; i <= total ; i++)); do
         
         docker run --privileged -itd \
         -e EDGE_KEY=${EDGE_KEY} \
+        --network virtualenvs \
         deviantony/virtualenv-edge:20-dind
 
         info "Virtual environment #${i} created"
